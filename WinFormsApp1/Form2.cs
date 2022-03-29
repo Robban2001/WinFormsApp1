@@ -13,15 +13,18 @@ namespace WinFormsApp1
 {
     public partial class Notepad : Form
     {
+        private string? filename;
+
         public Notepad()
         {
             InitializeComponent();
         }
 
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textBox.Text = String.Empty;
         }
+        
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -33,18 +36,20 @@ namespace WinFormsApp1
                 
         }
 
-        private void saveToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(fileName))
+            if (string.IsNullOrEmpty(filename))
                 return;
 
-            File.WriteAllText(fileName, textBox.Text);
+            File.WriteAllText(filename, textBox.Text);
         }
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
+
+       
 
         //private void InitializeComponent()
         //{
