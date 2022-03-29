@@ -98,6 +98,7 @@
             // textBox
             // 
             this.textBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBox.Location = new System.Drawing.Point(0, 24);
             this.textBox.Multiline = true;
             this.textBox.Name = "textBox";

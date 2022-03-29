@@ -18,11 +18,25 @@ namespace WinFormsApp1
         public Notepad()
         {
             InitializeComponent();
+            UpdateTitle();
+        }
+
+        private void UpdateTitle()
+        {
+            string file;
+            if (string.IsNullOrEmpty(filename))
+                file = "Unnamed";
+            else
+                file = Path.GetFileName(filename);
+
+            Text = file + " - Notepad";
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textBox.Text = String.Empty;
+            filename = null;
+            UpdateTitle();
         }
         
 
@@ -32,6 +46,7 @@ namespace WinFormsApp1
             {
                 textBox.Text = File.ReadAllText(openFileDialog.FileName);
                 filename = openFileDialog.FileName;
+                UpdateTitle();
             }
                 
         }
