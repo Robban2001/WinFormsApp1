@@ -37,6 +37,7 @@
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textBox = new System.Windows.Forms.TextBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.Menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -110,6 +111,10 @@
             // 
             this.openFileDialog.Filter = "Text documents|*.txt";
             // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.Filter = "Text documents|*.txt";
+            // 
             // Notepad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -139,5 +144,6 @@
         private ToolStripMenuItem saveToolStripMenuItem;
         private TextBox textBox;
         private OpenFileDialog openFileDialog;
+        private SaveFileDialog saveFileDialog;
     }
 }

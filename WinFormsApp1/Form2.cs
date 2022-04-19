@@ -39,15 +39,41 @@ namespace WinFormsApp1
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var eventArgs = new FormClosingEventArgs(CloseReason.None, false);
+            Notepad_FormClosing(null, eventArgs);
+
+            if (eventArgs.Cancel)
+                return;
+
             textBox.Text = String.Empty;
             filename = null;
             isUnsaved = false;
             UpdateTitle();
         }
         
+        private void SaveFile()
+        {
+            if (string.IsNullOrEmpty(filename))
+            {
+                if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    filename = saveFileDialog.FileName;
+                else
+                    return;
+            }
+
+            File.WriteAllText(filename, textBox.Text);
+            isUnsaved = false;
+            UpdateTitle();
+        }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var eventArgs = new FormClosingEventArgs(CloseReason.None, false);
+            Notepad_FormClosing(null, eventArgs);
+
+            if (eventArgs.Cancel)
+                return;
+
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 ignoreTextChangedEvent = true;
@@ -60,11 +86,9 @@ namespace WinFormsApp1
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(filename))
-                return;
-
-            File.WriteAllText(filename, textBox.Text);
+            SaveFile();
         }
+       
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -86,8 +110,20 @@ namespace WinFormsApp1
         {
             if (isUnsaved)
             {
-                MessageBox.Show(this, "Would you like to save?","Notepad", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
-                e.Cancel = true;
+                 var dialogResult = MessageBox.Show(this, "Would you like to save?","Notepad", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
+                
+                if (dialogResult == System.Windows.Forms.DialogResult.Yes)
+                {
+                    SaveFile();
+                }
+                else if(dialogResult == System.Windows.Forms.DialogResult.No)
+                {
+                    //Do Nothing
+                }
+                else if (dialogResult == System.Windows.Forms.DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
             }
         }
 
