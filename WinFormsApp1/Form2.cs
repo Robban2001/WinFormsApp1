@@ -14,6 +14,8 @@ namespace WinFormsApp1
     public partial class Notepad : Form
     {
         private string? filename;
+        private bool isUnsaved = false;
+        private bool ignoreTextChangedEvent = false;
 
         public Notepad()
         {
@@ -29,13 +31,17 @@ namespace WinFormsApp1
             else
                 file = Path.GetFileName(filename);
 
-            Text = file + " - Notepad";
+            if (isUnsaved)
+                Text = file + "* - Notepad";
+            else
+                Text = file + " - Notepad";
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textBox.Text = String.Empty;
             filename = null;
+            isUnsaved = false;
             UpdateTitle();
         }
         
@@ -44,6 +50,7 @@ namespace WinFormsApp1
         {
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                ignoreTextChangedEvent = true;
                 textBox.Text = File.ReadAllText(openFileDialog.FileName);
                 filename = openFileDialog.FileName;
                 UpdateTitle();
@@ -64,7 +71,27 @@ namespace WinFormsApp1
             Application.Exit();
         }
 
-       
+        private void textBox_TextChanged(object sender, EventArgs e)
+        {
+           if (ignoreTextChangedEvent)
+            {
+                ignoreTextChangedEvent = false;
+                return;
+            }
+            isUnsaved = true;
+            UpdateTitle();
+        }
+
+        private void Notepad_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (isUnsaved)
+            {
+                MessageBox.Show(this, "Would you like to save?","Notepad", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
+                e.Cancel = true;
+            }
+        }
+
+
 
         //private void InitializeComponent()
         //{
